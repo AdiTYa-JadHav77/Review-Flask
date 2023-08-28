@@ -1,0 +1,13 @@
+SELECT Company,
+       AVG(Salary) AS MedianSalary
+FROM (
+    SELECT e1.Company,
+           e1.Salary,
+           COUNT(e2.Salary) AS SalaryCount
+    FROM Employee e1
+    JOIN Employee e2 ON e1.Company = e2.Company AND e1.Salary >= e2.Salary
+    GROUP BY e1.Company, e1.Salary
+    HAVING e1.Salary >= PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY e1.Salary) OVER (PARTITION BY e1.Company) 
+           AND e1.Salary <= PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY e1.Salary) OVER (PARTITION BY e1.Company)
+) AS MedianQuery
+GROUP BY Company;

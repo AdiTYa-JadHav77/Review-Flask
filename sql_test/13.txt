@@ -1,0 +1,5 @@
+SELECT
+    CONCAT(p.FirstName, ' ', p.LastName) AS PersonName,
+    CONCAT(a.City, ', ', a.State) AS PersonAddress
+FROM Person p
+JOIN Address a ON p.PersonId = a.PersonId;
